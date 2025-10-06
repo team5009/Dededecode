@@ -20,15 +20,14 @@ class My_Color_Sensor (private val instance: LinearOpMode) {
         val colors = CS.getNormalizedColors()
         Color.colorToHSV(colors.toColor(), hsvValues)
 
-        if(hsvValues[0] > 5.0 && hsvValues[0] < 30.0){
-            return "RED"
-        }else if(hsvValues[0] > 55.0 && hsvValues[0] < 95.0){
-            return "YELLOW"
-        }else if(hsvValues[0] > 210.0 && hsvValues[0] < 250.0){
-            return "BLUE"
+        if(hsvValues[0] > 105.0 && hsvValues[0] < 140.0){
+            return "GREEN"
+        }else if(hsvValues[0] > 260.0 && hsvValues[0] < 310.0){
+            return "PURPLE"
         }else {
             return "NOTHING"
         }
+        telemetry.addData("color", hsvValues)
     }
     fun dist() : Double{
         return (CS as DistanceSensor).getDistance(DistanceUnit.CM)
