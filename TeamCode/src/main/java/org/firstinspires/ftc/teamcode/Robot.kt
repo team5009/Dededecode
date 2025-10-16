@@ -15,7 +15,7 @@ import org.firstinspires.ftc.teamcode.components.Selector
 import org.firstinspires.ftc.teamcode.components.Sorter
 import org.firstinspires.ftc.teamcode.components.Turret
 
-class Robot(instance: LinearOpMode, events:EventListener, alliance: Selector.alliance, is_auto:Boolean = false) {
+class Robot(instance: LinearOpMode, events:EventListener, val alliance: Selector.alliance, is_auto:Boolean = false) {
     val motors = Motors(instance.hardwareMap, "FL", "FR", "BL", "BR")
     val otos = Otos(instance.hardwareMap, "OTOS", /*OtosConstant.offset*/)
     val path = PathBuilder(instance, events, motors, otos, true)
@@ -49,6 +49,11 @@ class Robot(instance: LinearOpMode, events:EventListener, alliance: Selector.all
             path.setDistanceTolerance(2.0)
         }
     }
+    fun profile_far_shooter(){
+        if(alliance == Selector.alliance.RED){
+            path.segment(Point(0.0, 0.0))
+        }
+    }
 //    fun autoStart(){
 //        sorter.setPattern(shooter.ll.detectO())
 //    }
@@ -59,10 +64,10 @@ class Robot(instance: LinearOpMode, events:EventListener, alliance: Selector.all
 
 @Config
 object DriveConstants {
-    @JvmField var GainSpeed = 0.057
-    @JvmField var AccelerationLimit = 0.6
-    @JvmField var kD = 0.0
-    @JvmField var Tolerance = 4.0
+    @JvmField var GainSpeed = 0.05
+    @JvmField var AccelerationLimit = 0.7
+    @JvmField var kD = 0.006
+    @JvmField var Tolerance = 3.0
     @JvmField var Deadband = 0.25
 }
 @Config

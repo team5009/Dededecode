@@ -26,4 +26,6 @@ class Twose_Red(private val instance: LinearOpMode) {
             Point(79.0, 14.0,"stopped")
         )
     }
+
+
 }
