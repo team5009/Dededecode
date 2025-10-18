@@ -50,9 +50,9 @@ class Robot(instance: LinearOpMode, events:EventListener, val alliance: Selector
         }
     }
     fun profile_far_shooter(){
-        if(alliance == Selector.alliance.RED){
-            path.segment(Point(0.0, 0.0))
-        }
+
+        path.segment(Point(0.0, 0.0))
+
     }
 //    fun autoStart(){
 //        sorter.setPattern(shooter.ll.detectO())

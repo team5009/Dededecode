@@ -30,7 +30,7 @@ class Menu : LinearOpMode() {
             telemetry.addData("Selector: ", Selector.selectors.entries[s.selector])
             telemetry.update()
         }
-
+        t.init_auto()
         waitForStart()
         timer.reset()
         sleep(s.delay)

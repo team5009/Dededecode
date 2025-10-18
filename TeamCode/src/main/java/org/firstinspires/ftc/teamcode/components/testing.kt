@@ -25,8 +25,14 @@ class testing(private val instance: LinearOpMode) {
         shooter.motor.direction = DcMotorSimple.Direction.FORWARD
         shooter.motor.direction = DcMotorSimple.Direction.REVERSE
     }
+    fun init_auto(){
+        lift(1.0)
+        push_l(0.5)
+        push_r(0.5)
+    }
+
     fun power_mod(target: Double){
-        shooter.power += (target - shooter.velocity * convert)/target
+        shooter.power = shooter.power + (((target - (shooter.velocity * convert)) / target)) / 100.0
     }
     fun lift(position: Double){
         feeder.position = position

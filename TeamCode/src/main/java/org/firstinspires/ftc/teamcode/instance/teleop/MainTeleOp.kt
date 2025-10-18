@@ -28,11 +28,11 @@ class MainTeleOp: LinearOpMode() {
 		var fly = 0.0
 		var snap = 0L
 		var spinup = 0L
-		var targ = 0.0
+		val targ = 570.0
 
 		//dbounce
 		var f_pressed = false
-		var f_stop = false
+		var f_stop = true
 
 		while (opModeInInit()) {
 
@@ -47,7 +47,7 @@ class MainTeleOp: LinearOpMode() {
 			motors.gamepadMove(drive, strafe, rotate)
 			//flywheel
 			if(gamepad1.dpad_down && !f_pressed && f_stop){
-				targ = 550.0
+				shooter.power = 0.5
 				f_pressed = true
 				f_stop = false
 				spinup = -1L
@@ -59,7 +59,7 @@ class MainTeleOp: LinearOpMode() {
 			}else if(!gamepad1.dpad_down && f_pressed){
 				f_pressed = false
 			}
-			if(t.rpm() == 4000.0 && spinup < 0){
+			if(t.rpm() >= 4000.0 && spinup < 0){
 				spinup = System.currentTimeMillis() - snap
 			}
 			if(!f_stop) {
