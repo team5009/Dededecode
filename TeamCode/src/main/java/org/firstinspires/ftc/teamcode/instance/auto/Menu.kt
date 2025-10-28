@@ -3,9 +3,9 @@ package org.firstinspires.ftc.teamcode.instance.auto
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import com.qualcomm.robotcore.util.ElapsedTime
-import org.firstinspires.ftc.teamcode.components.My_Color_Sensor
+//import org.firstinspires.ftc.teamcode.components.My_Color_Sensor
 import org.firstinspires.ftc.teamcode.components.Selector
-import org.firstinspires.ftc.teamcode.components.testing
+import org.firstinspires.ftc.teamcode.components.Testing
 
 @Autonomous(name = "Menu", group = "Autos")
 class Menu : LinearOpMode() {
@@ -13,8 +13,8 @@ class Menu : LinearOpMode() {
         //val dashboard = FtcDashboard.getInstance()
         //telemetry = MultipleTelemetry(telemetry, dashboard.telemetry)
         val s = Selector(this)
-        val t = testing(this)
-        val color = My_Color_Sensor(this)
+        val t = Testing(this)
+        //val color = My_Color_Sensor(this)
         val timer = ElapsedTime()
         while(opModeInInit() && Selector.selectors.entries[s.selector] != Selector.selectors.DONE) {
             s.select()
@@ -35,14 +35,10 @@ class Menu : LinearOpMode() {
         timer.reset()
         sleep(s.delay)
 
-        if(s.path_name == Selector.paths.RED_FAR) {
-            Twose_Red(this).run(timer, s, t)
-        } else if(s.path_name == Selector.paths.RED_CLOSE) {
-            /*path name*/ //(this).run(timer, s, t)
-        }else if(s.path_name == Selector.paths.BLUE_FAR){
-            /*path name*/ //(this).run(timer, s, t)
-        }else if(s.path_name == Selector.paths.BLUE_CLOSE){
-            /*path name*/ //(this).run(timer, s, t)
+        if(s.path_name == Selector.paths.FAR) {
+            Scrimmage_FAR(this).run(timer, s, t)
+        } else if(s.path_name == Selector.paths.CLOSE) {
+            Scrimmage_CLOSE(this).run(timer, s, t)
         }
     }
 

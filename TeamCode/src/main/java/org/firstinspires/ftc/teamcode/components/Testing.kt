@@ -1,15 +1,16 @@
 package org.firstinspires.ftc.teamcode.components
 
-import androidx.core.util.toHalf
+import ca.helios5009.hyperion.core.PIDFController
 import ca.helios5009.hyperion.hardware.HyperionMotor
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import com.qualcomm.robotcore.hardware.DcMotor
 import com.qualcomm.robotcore.hardware.DcMotorSimple
 import com.qualcomm.robotcore.hardware.Servo
-import kotlinx.coroutines.flow.DEFAULT_CONCURRENCY
+import java.util.concurrent.atomic.AtomicReference
 import kotlin.math.PI
+import kotlin.math.min
 
-class testing(private val instance: LinearOpMode) {
+class Testing(private val instance: LinearOpMode) {
     val intake = HyperionMotor(instance.hardwareMap, "CH")
     val shooter = HyperionMotor(instance.hardwareMap, "Shooter")
     val feeder = instance.hardwareMap.get(Servo::class.java, "Feeder")
@@ -17,6 +18,10 @@ class testing(private val instance: LinearOpMode) {
     val push_l = instance.hardwareMap.get(Servo::class.java, "L")
 
     val convert = (PI*4)/(28*1.6)
+
+    var lastVelocity = 0.0
+    var lastTime: Double = 0.0
+    var period: Double = 0.0
 
     init {
         shooter.zeroPowerBehavior = DcMotor.ZeroPowerBehavior.FLOAT
@@ -27,12 +32,18 @@ class testing(private val instance: LinearOpMode) {
     }
     fun init_auto(){
         lift(1.0)
-        push_l(0.5)
+        push_l(0.6)
         push_r(0.5)
     }
 
     fun power_mod(target: Double){
-        shooter.power = shooter.power + (((target - (shooter.velocity * convert)) / target)) / 100.0
+        val v_error = (target - (shooter.velocity * convert))
+        val currentTime : Double = (System.nanoTime() / 1e9).toDouble();
+        if (lastTime.equals(0.0)) lastTime = currentTime;
+        period = currentTime - lastTime;
+        lastTime = currentTime;
+        shooter.setPowerWithTol(min((shooter.power + (v_error / target) / 50.0), 1.0))
+        lastVelocity = v_error
     }
     fun lift(position: Double){
         feeder.position = position
@@ -48,5 +59,8 @@ class testing(private val instance: LinearOpMode) {
     }
     fun rpm():Double{
         return shooter.velocity / 28 * 60
+    }
+    companion object{
+        val shooting = AtomicReference(false)
     }
 }

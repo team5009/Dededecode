@@ -17,7 +17,7 @@ class Selector(private val instance : LinearOpMode){
     var selector = 0
     val path_length = paths.entries.lastIndex + 1
     var path_index = 0
-    var path_name = paths.RED_CLOSE
+    var path_name = paths.FAR
 
     fun select() {
         if(instance.gamepad1.a && !a_pressed){
@@ -78,10 +78,8 @@ class Selector(private val instance : LinearOpMode){
         BLUE
     }
     enum class paths {
-        RED_FAR,
-        RED_CLOSE,
-        BLUE_FAR,
-        BLUE_CLOSE
+        FAR,
+        CLOSE
     }
     enum class selectors {
         ALLIANCE,
