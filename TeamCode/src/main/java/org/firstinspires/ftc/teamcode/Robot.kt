@@ -22,7 +22,7 @@ class Robot(instance: LinearOpMode, events:EventListener, val alliance: Selector
     val sorter = Sorter(instance.hardwareMap)
     val shooter = Turret(instance, alliance)
     init{
-        //shooter.ll.llstart()
+       // shooter.ll.llstart()
         if(is_auto){
             path.setDriveConstants(
                 DriveConstants.GainSpeed,

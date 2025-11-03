@@ -42,7 +42,7 @@ class Testing(private val instance: LinearOpMode) {
         if (lastTime.equals(0.0)) lastTime = currentTime;
         period = currentTime - lastTime;
         lastTime = currentTime;
-        shooter.setPowerWithTol(min((shooter.power + (v_error / target) / 50.0), 1.0))
+        shooter.power = min((shooter.power + (v_error / target) / 50.0), 1.0)
         lastVelocity = v_error
     }
     fun lift(position: Double){
@@ -61,6 +61,6 @@ class Testing(private val instance: LinearOpMode) {
         return shooter.velocity / 28 * 60
     }
     companion object{
-        val shooting = AtomicReference(false)
+        val shooting = AtomicReference(true)
     }
 }

@@ -13,7 +13,7 @@ class Turret(private val instance: LinearOpMode, alliance: Selector.alliance) {
     val hood = instance.hardwareMap.get(Servo::class.java, "Hood")
     val left_spin = instance.hardwareMap.get(Servo::class.java, "LS")
     val right_spin = instance.hardwareMap.get(Servo::class.java, "RS")
-//    val ll = Limelight(instance.hardwareMap, alliance)
+    //val ll = Limelight(instance.hardwareMap, alliance)
 
     //conversion vars
     val convert = (PI*4)/(28*1.6)

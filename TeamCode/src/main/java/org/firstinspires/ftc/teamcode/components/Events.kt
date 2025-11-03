@@ -4,6 +4,7 @@ import ca.helios5009.hyperion.misc.events.EventListener
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import com.qualcomm.robotcore.util.ElapsedTime
 import kotlinx.coroutines.delay
+import org.firstinspires.ftc.teamcode.Robot
 import java.util.concurrent.atomic.AtomicReference
 import kotlin.math.abs
 
@@ -20,8 +21,14 @@ class Events(private val instance:LinearOpMode, private val s : Selector, privat
             "BLUE"
         }
         listener.addListener("start"){
+            t.shooter.power = 0.8
+            delay(900)
             while(instance.opModeIsActive()){
-               t.power_mod(570.0)
+                if(Testing.shooting.get()){
+                    t.power_mod(590.0)
+                }else{
+                    t.shooter.power = 0.0
+                }
             }
             "stop"
         }
@@ -30,6 +37,7 @@ class Events(private val instance:LinearOpMode, private val s : Selector, privat
             while(instance.opModeIsActive() && states.get() != Events.AutoStates.READY_SHOOT){
                 delay(100)
             }
+            delay(500)
             shoot()
             t.push_l(0.2)
             delay(800)
@@ -42,16 +50,20 @@ class Events(private val instance:LinearOpMode, private val s : Selector, privat
             t.push_l(0.6)
             shoot()
             states.set(AutoStates.FINISH_SHOOT)
-            t.shooter.power = 0.0
+            Testing.shooting.set(false)
             "stopShooting"
         }
         listener.addListener("intake"){
             while (instance.opModeIsActive() && states.get() != AutoStates.INTAKE_READY){
                 delay(100)
             }
-            t.intake.power = -1.0
-            delay(7000)
+            t.intake.power = 1.0
+            delay(4000)
             states.set(AutoStates.INTAKED)
+            t.intake.power = -0.5
+            delay(200)
+            t.intake.power = 1.0
+            delay(400)
             t.intake.power = 0.0
             "stopped"
         }

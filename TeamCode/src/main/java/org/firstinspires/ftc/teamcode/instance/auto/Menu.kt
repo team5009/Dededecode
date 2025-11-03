@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.instance.auto
 
+import com.acmerobotics.dashboard.FtcDashboard
+import com.acmerobotics.dashboard.telemetry.MultipleTelemetry
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import com.qualcomm.robotcore.util.ElapsedTime
@@ -10,8 +12,8 @@ import org.firstinspires.ftc.teamcode.components.Testing
 @Autonomous(name = "Menu", group = "Autos")
 class Menu : LinearOpMode() {
     override fun runOpMode() {
-        //val dashboard = FtcDashboard.getInstance()
-        //telemetry = MultipleTelemetry(telemetry, dashboard.telemetry)
+        val dashboard = FtcDashboard.getInstance()
+        telemetry = MultipleTelemetry(telemetry, dashboard.telemetry)
         val s = Selector(this)
         val t = Testing(this)
         //val color = My_Color_Sensor(this)

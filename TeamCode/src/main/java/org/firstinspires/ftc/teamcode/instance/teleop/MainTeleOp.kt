@@ -5,6 +5,8 @@ import ca.helios5009.hyperion.hardware.HyperionMotor
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp
 import com.qualcomm.robotcore.util.ElapsedTime
+import org.firstinspires.ftc.teamcode.components.Limelight
+import org.firstinspires.ftc.teamcode.components.Selector
 //import org.firstinspires.ftc.teamcode.components.My_Color_Sensor
 import org.firstinspires.ftc.teamcode.components.Testing
 import kotlin.math.abs
@@ -14,6 +16,8 @@ class MainTeleOp: LinearOpMode() {
 	override fun runOpMode() {
 		val motors = Motors(hardwareMap, "FL", "FR", "BL", "BR")
 		val intake = HyperionMotor(hardwareMap, "CH")
+		val s = Selector(this)
+		//val ll = Limelight(this.hardwareMap, s.alliance_name)
 		val shooter = HyperionMotor(hardwareMap, "Shooter")
 		val t = Testing(this)
 		motors.setPowerRatio(1.0)
@@ -26,7 +30,7 @@ class MainTeleOp: LinearOpMode() {
 		var fly = 0.0
 		var snap = 0L
 		var spinup = 0L
-		val targ = 570.0
+		val targ = 590.0
 
 		//dbounce
 		var f_pressed = false
@@ -65,9 +69,9 @@ class MainTeleOp: LinearOpMode() {
 			}
 			//intake
 			if (gamepad1.right_bumper){
-				intake.power = 0.95
-			}else if(gamepad1.left_bumper){
 				intake.power = -0.95
+			}else if(gamepad1.left_bumper){
+				intake.power = 0.95
 			}else{
 				intake.power = 0.0
 			}
@@ -98,6 +102,9 @@ class MainTeleOp: LinearOpMode() {
 			telemetry.addLine()
 			telemetry.addData("timer", spinup)
 			telemetry.addLine()
+//			telemetry.addData("Gatag", ll.detectG())
+//			telemetry.addLine()
+//			telemetry.addData("Oatag", ll.detectO())
 //			telemetry.addData("color", color.sensor())
 			telemetry.update()
 		}
