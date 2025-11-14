@@ -5,6 +5,9 @@ import ca.helios5009.hyperion.hardware.HyperionMotor
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp
 import com.qualcomm.robotcore.util.ElapsedTime
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import org.firstinspires.ftc.teamcode.components.Limelight
 import org.firstinspires.ftc.teamcode.components.Selector
 //import org.firstinspires.ftc.teamcode.components.My_Color_Sensor
@@ -27,14 +30,8 @@ class MainTeleOp: LinearOpMode() {
 		val timer = ElapsedTime()
 
 		var drive = 0.0
-		var fly = 0.0
-		var snap = 0L
-		var spinup = 0L
-		val targ = 590.0
 
-		//dbounce
-		var f_pressed = false
-		var f_stop = true
+		val controls = TeleOp_GamePads(this)
 
 		while (opModeInInit()) {
 
@@ -42,70 +39,28 @@ class MainTeleOp: LinearOpMode() {
 		waitForStart()
 		timer.reset()
 
+		CoroutineScope(Dispatchers.Default).launch {
+			while(opModeIsActive()) {
+				controls.game_pad_1()
+			}
+		}
+		CoroutineScope(Dispatchers.Default).launch {
+			while(opModeIsActive()) {
+				controls.game_pad_2()
+			}
+		}
+
 		while (opModeIsActive()) {
 			drive = -gamepad1.left_stick_y.toDouble()
 			val strafe = gamepad1.left_stick_x.toDouble()
 			val rotate = gamepad1.right_stick_x.toDouble()
 			motors.gamepadMove(drive, strafe, rotate)
-			//flywheel
-			if(gamepad1.dpad_down && !f_pressed && f_stop){
-				shooter.power = 0.5
-				f_pressed = true
-				f_stop = false
-				spinup = -1L
-				snap = System.currentTimeMillis()
-			}else if(gamepad1.dpad_down && !f_pressed && !f_stop){
-				shooter.power = 0.0
-				f_pressed = true
-				f_stop = true
-			}else if(!gamepad1.dpad_down && f_pressed){
-				f_pressed = false
-			}
-			if(t.rpm() >= 4000.0 && spinup < 0){
-				spinup = System.currentTimeMillis() - snap
-			}
-			if(!f_stop) {
-				t.power_mod(targ)
-			}
-			//intake
-			if (gamepad1.right_bumper){
-				intake.power = -0.95
-			}else if(gamepad1.left_bumper){
-				intake.power = 0.95
-			}else{
-				intake.power = 0.0
-			}
-			//feeder
-			if(gamepad1.cross){
-				if(abs(t.lastVelocity) < 7.0) {
-					t.lift(0.0)
-				}
-			} else {
-				t.lift(1.0)
-			}
-			if(gamepad1.circle){
-			//feed the feeder right
-				t.push_r(0.9)
-			}else if(gamepad1.square){
-			//feed the feeder left
-				t.push_l(0.2)
-			}else if(gamepad1.triangle){
-				t.push_r(0.8)
-				t.push_l(0.3)
-			}else {
-				t.push_l(0.6)
-				t.push_r(0.5)
-			}
 			telemetry.addData("speed", t.velocity())
 			telemetry.addLine()
 			telemetry.addData("rpm", t.rpm())
 			telemetry.addLine()
-			telemetry.addData("timer", spinup)
+			telemetry.addData("timer", controls.spinup)
 			telemetry.addLine()
-//			telemetry.addData("Gatag", ll.detectG())
-//			telemetry.addLine()
-//			telemetry.addData("Oatag", ll.detectO())
-//			telemetry.addData("color", color.sensor())
 			telemetry.update()
 		}
 

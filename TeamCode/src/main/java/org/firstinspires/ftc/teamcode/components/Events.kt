@@ -12,7 +12,11 @@ class Events(private val instance:LinearOpMode, private val s : Selector, privat
     val listener = EventListener()
     val states = AtomicReference(AutoStates.START)
     //val color = My_Color_Sensor(instance)
-    val targ = 570.0
+    val targ = if(s.path_name == Selector.paths.FAR){
+        AtomicReference(610.0)
+    }else {
+        AtomicReference(550.0)
+    }
     val time_out = ElapsedTime()
     init {
         val alliance = if(s.alliance_name == Selector.alliance.RED){
@@ -21,11 +25,9 @@ class Events(private val instance:LinearOpMode, private val s : Selector, privat
             "BLUE"
         }
         listener.addListener("start"){
-            t.shooter.power = 0.8
-            delay(900)
             while(instance.opModeIsActive()){
                 if(Testing.shooting.get()){
-                    t.power_mod(590.0)
+                    t.power_mod(targ.get())
                 }else{
                     t.shooter.power = 0.0
                 }
@@ -34,18 +36,19 @@ class Events(private val instance:LinearOpMode, private val s : Selector, privat
         }
         listener.addListener("shoot"){
             //t.shooter.power = 0.8
+//            t.push_r(0.55)
+//            t.push_l(0.55)
             while(instance.opModeIsActive() && states.get() != Events.AutoStates.READY_SHOOT){
                 delay(100)
             }
-            delay(500)
             shoot()
-            t.push_l(0.2)
-            delay(800)
-            t.push_l(0.6)
+            t.push_r(0.75)
+            delay(300)
+            t.push_r(0.5)
             shoot()
-            t.push_r(0.9)
-            t.push_l(0.2)
-            delay(600)
+            t.push_r(0.75)
+            t.push_l(0.35)
+            delay(350)
             t.push_r(0.5)
             t.push_l(0.6)
             shoot()
@@ -58,12 +61,8 @@ class Events(private val instance:LinearOpMode, private val s : Selector, privat
                 delay(100)
             }
             t.intake.power = 1.0
-            delay(4000)
+            delay(2800)
             states.set(AutoStates.INTAKED)
-            t.intake.power = -0.5
-            delay(200)
-            t.intake.power = 1.0
-            delay(400)
             t.intake.power = 0.0
             "stopped"
         }
@@ -72,7 +71,7 @@ class Events(private val instance:LinearOpMode, private val s : Selector, privat
         val time_out = ElapsedTime()
         time_out.reset()
         while(instance.opModeIsActive() && time_out.seconds() < 4.0){
-            if( abs(t.lastVelocity) < 7.0){
+            if( abs(targ.get() - t.lastVelocity) < 10.0){
                 break
             }
             delay(10)
@@ -88,4 +87,5 @@ class Events(private val instance:LinearOpMode, private val s : Selector, privat
         INTAKE_READY,
         INTAKED
     }
+
 }

@@ -20,8 +20,8 @@ class Scrimmage_FAR(private val instance: LinearOpMode) {
         Testing.shooting.set(true)
         bot.path.segment(
             Point(65.0, 83.0,"shoot"),
-            Point(83.0, 82.0).setTolerance(5.0),
-            Point(80.0, 82.0).setDeg(45.0),
+            Point(85.0, 82.0).setTolerance(5.0),
+            Point(82.0, 82.0).setDeg(45.0),
         )
         eventListener.states.set(Events.AutoStates.READY_SHOOT)
         while(instance.opModeIsActive() && eventListener.states.get() != Events.AutoStates.FINISH_SHOOT){
@@ -31,7 +31,7 @@ class Scrimmage_FAR(private val instance: LinearOpMode) {
             Point(70.0, 109.0, "intake").setDeg(60.0)
         )
         eventListener.states.set(Events.AutoStates.INTAKE_READY)
-        bot.motors.setPowerRatio(0.3)
+        bot.motors.setPowerRatio(0.6)
         bot.path.segment(
             Point(80.0, 125.0).setTolerance(8.0).setDeg(60.0),
             Point(78.0, 119.5).setDeg(60.0)
@@ -50,7 +50,7 @@ class Scrimmage_FAR(private val instance: LinearOpMode) {
             Point(24.0, 100.0, "intake").setDeg(60.0)
         )
         eventListener.states.set(Events.AutoStates.INTAKE_READY)
-        bot.motors.setPowerRatio(0.3)
+        bot.motors.setPowerRatio(0.6)
         bot.path.segment(
             Point(29.0, 128.0).setTolerance(8.0).setDeg(60.0),
             Point(31.0, 112.5).setDeg(60.0)

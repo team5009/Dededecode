@@ -1,6 +1,5 @@
 package org.firstinspires.ftc.teamcode.components
 
-import ca.helios5009.hyperion.core.PIDFController
 import ca.helios5009.hyperion.hardware.HyperionMotor
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import com.qualcomm.robotcore.hardware.DcMotor
@@ -19,9 +18,9 @@ class Testing(private val instance: LinearOpMode) {
 
     val convert = (PI*4)/(28*1.6)
 
+
+    val gain = 0.007
     var lastVelocity = 0.0
-    var lastTime: Double = 0.0
-    var period: Double = 0.0
 
     init {
         shooter.zeroPowerBehavior = DcMotor.ZeroPowerBehavior.FLOAT
@@ -36,7 +35,7 @@ class Testing(private val instance: LinearOpMode) {
         push_r(0.5)
     }
 
-    fun power_mod(target: Double){
+/*    fun power_mod(target: Double){
         val v_error = (target - (shooter.velocity * convert))
         val currentTime : Double = (System.nanoTime() / 1e9).toDouble();
         if (lastTime.equals(0.0)) lastTime = currentTime;
@@ -44,6 +43,15 @@ class Testing(private val instance: LinearOpMode) {
         lastTime = currentTime;
         shooter.power = min((shooter.power + (v_error / target) / 50.0), 1.0)
         lastVelocity = v_error
+    }
+ */
+    fun power_mod(target: Double) {
+        val current_v = shooter.velocity * convert
+
+        val exp_e = target - (2 * current_v - lastVelocity)
+        shooter.power = min(shooter.power + gain * (exp_e / target), 1.0)
+
+        lastVelocity = current_v
     }
     fun lift(position: Double){
         feeder.position = position
