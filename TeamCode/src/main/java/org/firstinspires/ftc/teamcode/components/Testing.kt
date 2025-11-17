@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.components
 
+import ca.helios5009.hyperion.core.PIDFController
 import ca.helios5009.hyperion.hardware.HyperionMotor
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import com.qualcomm.robotcore.hardware.DcMotor
@@ -15,6 +16,7 @@ class Testing(private val instance: LinearOpMode) {
     val feeder = instance.hardwareMap.get(Servo::class.java, "Feeder")
     val push_r = instance.hardwareMap.get(Servo::class.java, "R")
     val push_l = instance.hardwareMap.get(Servo::class.java, "L")
+    val breakbeam = Java_Beambreak().create_sensor("bb1", instance.hardwareMap, true)
 
     val convert = (PI*4)/(28*1.6)
 
@@ -47,12 +49,18 @@ class Testing(private val instance: LinearOpMode) {
  */
     fun power_mod(target: Double) {
         val current_v = shooter.velocity * convert
-
         val exp_e = target - (2 * current_v - lastVelocity)
+
         shooter.power = min(shooter.power + gain * (exp_e / target), 1.0)
 
         lastVelocity = current_v
     }
+//    fun power_mod_pidf(target: Double){
+//        val current_v = shooter.velocity * convert
+//
+//        shooter.power =
+//
+//    }
     fun lift(position: Double){
         feeder.position = position
     }

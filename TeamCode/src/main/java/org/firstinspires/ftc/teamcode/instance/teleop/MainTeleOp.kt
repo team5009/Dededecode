@@ -61,6 +61,9 @@ class MainTeleOp: LinearOpMode() {
 			telemetry.addLine()
 			telemetry.addData("timer", controls.spinup)
 			telemetry.addLine()
+			telemetry.addData("f_pressed", controls.f_pressed)
+			telemetry.addData("f_stop", controls.f_stop)
+			telemetry.addData("last velo", t.lastVelocity)
 			telemetry.update()
 		}
 

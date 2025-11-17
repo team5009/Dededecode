@@ -58,5 +58,6 @@ class Scrimmage_FAR(private val instance: LinearOpMode) {
         .segment(
             Point(32.0, 127.0).setDeg(75.0).setTolerance(3.0)
         )
+        bot.path.end()
     }
 }

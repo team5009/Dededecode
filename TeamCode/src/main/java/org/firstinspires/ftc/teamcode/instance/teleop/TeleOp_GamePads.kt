@@ -10,20 +10,21 @@ class TeleOp_GamePads (private val instance: LinearOpMode) {
     private val gamepad1 = instance.gamepad1
     private val gamepad2 = instance.gamepad2
 
-    val intake = HyperionMotor(instance.hardwareMap, "CH")
-    val shooter = HyperionMotor(instance.hardwareMap, "Shooter")
 
     val t = Testing(instance)
 
     //misc var
     var snap = 0L
     var spinup = 0L
-    var targ = 0.0
+    var targ = 590.0
 
     //Dbounce
     var f_pressed = false
     var f_stop = true
     var is_pushed = false
+
+    var was_broken = false
+    var was_lifting = false
 
     fun game_pad_1() {
         //Joshua
@@ -41,7 +42,7 @@ class TeleOp_GamePads (private val instance: LinearOpMode) {
             t.push_r(0.8)
             t.push_l(0.3)
             is_pushed = true
-        }else if(!(gamepad1.circle && gamepad1.triangle && gamepad1.square) && is_pushed){
+        }else if(!(gamepad1.circle || gamepad1.triangle || gamepad1.square) && is_pushed){
             t.push_l(0.6)
             t.push_r(0.5)
             is_pushed = false
@@ -49,48 +50,51 @@ class TeleOp_GamePads (private val instance: LinearOpMode) {
 
         //Feeder
         if(gamepad1.cross){
-            if(abs(targ - t.lastVelocity) < 15.0) {
+            if(abs(targ - t.lastVelocity) < 15.0 && !was_lifting) {
                 t.lift(0.0)
+                was_lifting = true
+            }else if(was_lifting && !was_broken && !t.breakbeam.state){
+                was_broken = true
+            }else if(was_lifting && was_broken && t.breakbeam.state){
+                t.lift(1.0)
             }
         } else {
             t.lift(1.0)
+            was_lifting = false
+            was_broken = false
         }
 
         //intake
         if (gamepad1.right_bumper){
-            intake.power = -0.6
+            t.intake.power = -0.6
         }else if(gamepad1.left_bumper){
-            intake.power = 1.0
+            t.intake.power = 1.0
         }else{
-            intake.power = 0.0
+            t.intake.power = 0.0
         }
 
         //flywheel
         if(gamepad1.dpad_down && !f_pressed && f_stop){
-            //start 590
+            t.shooter.power = 0.5
             f_pressed = true
-            targ = 590.0
             f_stop = false
-//            t.push_r(0.55)
-//            t.push_l(0.55)
-        }else if(gamepad1.dpad_left && !f_pressed && f_stop){
-            //start 630
-            f_pressed = true
-            targ = 630.0
-            f_stop = false
-//            t.push_r(0.55)
-//            t.push_l(0.55)
-        }else if((gamepad1.dpad_down || gamepad1.dpad_left) && !f_pressed && !f_stop){
-            //stop shooter
-            shooter.power = 0.0
+            spinup = -1L
+            snap = System.currentTimeMillis()
+        }else if(gamepad1.dpad_down && !f_pressed && !f_stop){
+            t.shooter.power = 0.0
             f_pressed = true
             f_stop = true
         }else if(!gamepad1.dpad_down && f_pressed){
             f_pressed = false
         }
-        //shooter running
+        if(t.rpm() >= 4000.0 && spinup < 0){
+            spinup = System.currentTimeMillis() - snap
+        }
         if(!f_stop) {
             t.power_mod(targ)
+            instance.telemetry.addLine("shooting")
+        }else{
+
         }
     }
 

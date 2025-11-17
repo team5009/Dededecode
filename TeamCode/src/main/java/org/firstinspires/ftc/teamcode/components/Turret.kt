@@ -13,6 +13,7 @@ class Turret(private val instance: LinearOpMode, alliance: Selector.alliance) {
     val hood = instance.hardwareMap.get(Servo::class.java, "Hood")
     val left_spin = instance.hardwareMap.get(Servo::class.java, "LS")
     val right_spin = instance.hardwareMap.get(Servo::class.java, "RS")
+    val breakbeam = Java_Beambreak().create_sensor("bb1", instance.hardwareMap, true)
     //val ll = Limelight(instance.hardwareMap, alliance)
 
     //conversion vars
