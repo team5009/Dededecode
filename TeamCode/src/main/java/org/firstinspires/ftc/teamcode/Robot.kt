@@ -87,6 +87,6 @@ object RotateConstants {
 
 @Config
 object OtosConstant {
-    @JvmField var offset = Point(-1.0, 0.0)
+    @JvmField var offset = Point(0.625, 0.0)
 }
 

@@ -14,7 +14,7 @@ class Events(private val instance:LinearOpMode, private val s : Selector, privat
     //val color = My_Color_Sensor(instance)
     var was_broken = false
     val targ = if(s.path_name == Selector.paths.FAR){
-        AtomicReference(600.0)
+        AtomicReference(585.0)
     }else {
         AtomicReference(550.0)
     }
@@ -26,6 +26,7 @@ class Events(private val instance:LinearOpMode, private val s : Selector, privat
             "BLUE"
         }
         listener.addListener("start"){
+            Testing.shooting.set(true)
             while(instance.opModeIsActive()){
                 if(Testing.shooting.get()){
                     t.power_mod(targ.get())
@@ -48,9 +49,9 @@ class Events(private val instance:LinearOpMode, private val s : Selector, privat
             t.push_r(0.8)
             t.push_l(0.3)
             delay(400)
+            shoot()
             t.push_r(0.5)
             t.push_l(0.6)
-            shoot()
             states.set(AutoStates.FINISH_SHOOT)
             Testing.shooting.set(false)
             "stopShooting"
@@ -59,11 +60,27 @@ class Events(private val instance:LinearOpMode, private val s : Selector, privat
             while (instance.opModeIsActive() && states.get() != AutoStates.INTAKE_READY){
                 delay(100)
             }
+            s.motors.setPowerRatio(0.6)
             t.intake.power = 1.0
-            delay(1900)
+            delay(800)
+            Testing.shooting.set(true)
+            delay(1100)
             states.set(AutoStates.INTAKED)
+            s.motors.setPowerRatio(1.0)
             t.intake.power = 0.0
             "stopped"
+        }
+        listener.addListener("gate"){
+            while(instance.opModeIsActive() && states.get() != Events.AutoStates.GATE_READY){
+                delay(100)
+            }
+            s.motors.setPowerRatio(1.8)
+            s.motors.gamepadMove(1.0,0.0, 0.0)
+            delay(1000)
+            s.motors.setPowerRatio(1.0)
+            s.motors.gamepadMove(0.0,0.0, 0.0)
+            states.set(AutoStates.INTAKED)
+            ""
         }
     }
     suspend fun shoot(){
@@ -95,6 +112,7 @@ class Events(private val instance:LinearOpMode, private val s : Selector, privat
         START,
         READY_SHOOT,
         FINISH_SHOOT,
+        GATE_READY,
         INTAKE_READY,
         INTAKED
     }

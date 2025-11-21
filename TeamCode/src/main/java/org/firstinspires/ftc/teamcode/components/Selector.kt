@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.components
 
+import ca.helios5009.hyperion.core.Motors
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 
 class Selector(private val instance : LinearOpMode){
@@ -19,9 +20,11 @@ class Selector(private val instance : LinearOpMode){
     var path_index = 0
     var path_name = paths.FAR
 
-    val partner_length = partner.entries.lastIndex + 1
-    var partner_index = 0
-    var partner_name = partner.YES
+    val gate_length = open_gate.entries.lastIndex + 1
+    var gate_index = 0
+    var gate_open = open_gate.YES
+
+    lateinit var motors : Motors
 
     fun select() {
         if(instance.gamepad1.a && !a_pressed){
@@ -30,6 +33,9 @@ class Selector(private val instance : LinearOpMode){
             }
             if(selectors.entries[selector] == selectors.ALLIANCE){
                 alliance_name = alliance.entries[alliance_index]
+            }
+            if(selectors.entries[selector] == selectors.DOES_GATE){
+                gate_open = open_gate.entries[gate_index]
             }
             a_pressed = true
             selector += 1
@@ -65,13 +71,13 @@ class Selector(private val instance : LinearOpMode){
             } else if(!instance.gamepad1.dpad_up && !instance.gamepad1.dpad_down && d_pad_pressed) {
                 d_pad_pressed = false
             }
-        }else if(selectors.entries[selector] == selectors.DOES_PARTNER) {
+        }else if(selectors.entries[selector] == selectors.DOES_GATE) {
             if(instance.gamepad1.dpad_down && !d_pad_pressed){
                 d_pad_pressed = true
-                partner_index = (partner_index + 1) % partner_length
+                gate_index = (gate_index + 1) % gate_length
             } else if(instance.gamepad1.dpad_up && !d_pad_pressed){
                 d_pad_pressed = true
-                partner_index = (partner_index - 1) % partner_length
+                gate_index = (gate_index - 1) % gate_length
             } else if(!instance.gamepad1.dpad_up && !instance.gamepad1.dpad_down && d_pad_pressed) {
                 d_pad_pressed = false
             }
@@ -95,14 +101,14 @@ class Selector(private val instance : LinearOpMode){
         FAR,
         CLOSE
     }
-    enum class partner{
+    enum class open_gate{
         YES,
         NO
     }
     enum class selectors {
         ALLIANCE,
         PATH_NAME,
-        DOES_PARTNER,
+        DOES_GATE,
         DELAY,
         READY,
         DONE

@@ -12,6 +12,7 @@ class Scrimmage_CLOSE(private val instance: LinearOpMode) {
     fun run(timer: ElapsedTime, s: Selector, t: Testing){
         val eventListener = Events(instance, s, t)
         val bot = Robot(instance, eventListener.listener, s.alliance_name, true)
+        s.motors = bot.motors
         bot.path.start(
             Point(112.0, 100.0, "start").setDeg(90.0),
             s.alliance_name == Selector.alliance.RED
@@ -26,7 +27,7 @@ class Scrimmage_CLOSE(private val instance: LinearOpMode) {
         while(instance.opModeIsActive() && eventListener.states.get() != Events.AutoStates.FINISH_SHOOT){
             instance.sleep(100)
         }
-        //set 2
+        //set 2 close spike mark
         bot.path.segment(
             Point(61.0, 91.0, "intake").setDeg(90.0)
         )
@@ -46,13 +47,13 @@ class Scrimmage_CLOSE(private val instance: LinearOpMode) {
         while(instance.opModeIsActive() && eventListener.states.get() != Events.AutoStates.FINISH_SHOOT){
             instance.sleep(100)
         }
-//        if(s.partner_name == Selector.partner.YES){
+//        if(s.gate_open == Selector.open_gate.YES){
 //            bot.path.segment(
 //                Point(46.0, 91.0).setTolerance(4.0).setDeg(90.0),
 //                Point(46.0, 110.0)
 //            )
 //        }
-        //set 3
+        //set 3 middle spike mark
         bot.path.segment(
             Point(39.0, 89.0, "intake").setDeg(90.0)
         )
@@ -72,7 +73,7 @@ class Scrimmage_CLOSE(private val instance: LinearOpMode) {
         while(instance.opModeIsActive() && eventListener.states.get() != Events.AutoStates.FINISH_SHOOT){
             instance.sleep(100)
         }
-        //set 4
+        //set 4 far spike mark
         bot.path.segment(
             Point(17.0, 93.0, "intake").setDeg(105.0)
         )

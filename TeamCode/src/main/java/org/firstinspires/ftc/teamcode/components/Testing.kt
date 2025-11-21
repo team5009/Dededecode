@@ -77,6 +77,6 @@ class Testing(private val instance: LinearOpMode) {
         return shooter.velocity / 28 * 60
     }
     companion object{
-        val shooting = AtomicReference(true)
+        val shooting = AtomicReference(false)
     }
 }
