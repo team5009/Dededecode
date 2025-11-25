@@ -21,7 +21,7 @@ class Testing(private val instance: LinearOpMode) {
     val convert = (PI*4)/(28*1.6)
 
 
-    val gain = 0.007
+    val gain = 0.008
     var lastVelocity = 0.0
 
     init {

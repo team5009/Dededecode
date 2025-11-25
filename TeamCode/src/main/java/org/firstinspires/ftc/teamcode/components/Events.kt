@@ -40,19 +40,21 @@ class Events(private val instance:LinearOpMode, private val s : Selector, privat
             while(instance.opModeIsActive() && states.get() != Events.AutoStates.READY_SHOOT){
                 delay(100)
             }
-            delay(500)
+            delay(400)
             shoot()
             t.push_r(0.75)
             delay(300)
-            t.push_r(0.5)
+            t.push_r(0.45)
             shoot()
             t.push_r(0.8)
             t.push_l(0.3)
-            delay(400)
+            targ.set(targ.get() - 12.0)
+            delay(250)
             shoot()
-            t.push_r(0.5)
-            t.push_l(0.6)
+            t.push_r(0.45)
+            t.push_l(0.65)
             states.set(AutoStates.FINISH_SHOOT)
+            targ.set(targ.get() + 12.0)
             Testing.shooting.set(false)
             "stopShooting"
         }
@@ -87,7 +89,7 @@ class Events(private val instance:LinearOpMode, private val s : Selector, privat
         val time_out = ElapsedTime()
         time_out.reset()
         while(instance.opModeIsActive() && time_out.seconds() < 1.7){
-            if( abs(targ.get() - t.lastVelocity) < 10.0){
+            if( abs(targ.get() - t.lastVelocity) < 17.0){
                 break
             }
             delay(10)

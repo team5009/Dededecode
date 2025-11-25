@@ -18,7 +18,7 @@ class Menu : LinearOpMode() {
         val t = Testing(this)
         //val color = My_Color_Sensor(this)
         val timer = ElapsedTime()
-        while(opModeInInit() && Selector.selectors.entries[s.selector] != Selector.selectors.DONE) {
+        while (opModeInInit() && Selector.selectors.entries[s.selector] != Selector.selectors.DONE) {
             s.select()
             s.scroll()
             telemetry.addData("Which alliance: ", Selector.alliance.entries[s.alliance_index])
@@ -27,8 +27,8 @@ class Menu : LinearOpMode() {
             telemetry.addData("Path: ", Selector.paths.entries[s.path_index])
             telemetry.addData("Selected Path: ", s.path_name)
             telemetry.addLine()
-            telemetry.addData("Will the gate open? ",Selector.open_gate.entries[s.gate_index])
-            telemetry.addData("Is gate open?" , s.gate_open)
+            telemetry.addData("Will the gate open? ", Selector.open_gate.entries[s.gate_index])
+            telemetry.addData("Is gate open?", s.gate_open)
             telemetry.addLine()
             telemetry.addData("Delay(ms): ", s.delay)
             telemetry.addLine()
@@ -40,11 +40,10 @@ class Menu : LinearOpMode() {
         timer.reset()
         sleep(s.delay)
 
-        if(s.path_name == Selector.paths.FAR) {
+        if (s.path_name == Selector.paths.FAR) {
             Scrimmage_FAR(this).run(timer, s, t)
-        } else if(s.path_name == Selector.paths.CLOSE) {
+        } else if (s.path_name == Selector.paths.CLOSE) {
             Scrimmage_CLOSE(this).run(timer, s, t)
         }
     }
-
 }

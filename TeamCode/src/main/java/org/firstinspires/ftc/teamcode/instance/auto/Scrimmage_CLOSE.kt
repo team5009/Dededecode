@@ -17,16 +17,18 @@ class Scrimmage_CLOSE(private val instance: LinearOpMode) {
             Point(112.0, 100.0, "start").setDeg(90.0),
             s.alliance_name == Selector.alliance.RED
         )
+        eventListener.targ.set(540.0)
         //set 1
         Testing.shooting.set(true)
         bot.path.segment(
-            Point(113.0, 80.0, "shoot").setTolerance(5.0).setDeg(80.0),
-            Point(113.0, 73.0).setDeg(80.0)
+            Point(111.0, 76.0, "shoot").setTolerance(5.0).setDeg(90.0),
+            Point(111.0, 71.0).setDeg(90.0)
         )
         eventListener.states.set(Events.AutoStates.READY_SHOOT)
         while(instance.opModeIsActive() && eventListener.states.get() != Events.AutoStates.FINISH_SHOOT){
-            instance.sleep(100)
+            bot.path.wait(100.0)
         }
+        eventListener.targ.set(555.0)
         //set 2 close spike mark
         bot.path.segment(
             Point(61.0, 91.0, "intake").setDeg(90.0)
@@ -34,25 +36,19 @@ class Scrimmage_CLOSE(private val instance: LinearOpMode) {
         eventListener.states.set(Events.AutoStates.INTAKE_READY)
         bot.motors.setPowerRatio(0.6)
         bot.path.segment(
-            Point(67.0, 113.0).setTolerance(8.0).setDeg(90.0),
-            Point(67.0, 110.5).setDeg(60.0)
+            Point(65.0, 114.0).setTolerance(11.0).setDeg(90.0),
+            Point(65.0, 111.5).setDeg(90.0)
         )
         Testing.shooting.set(true)
         bot.motors.setPowerRatio(1.0)
         bot.path.segment(
-            Point(107.5, 76.0, "shoot").setTolerance(5.0).setDeg(80.0),
-            Point(111.0, 71.0).setDeg(80.0)
+            Point(101.5, 76.0, "shoot").setTolerance(5.0).setDeg(80.0),
+            Point(104.0, 71.0).setDeg(80.0)
         )
         eventListener.states.set(Events.AutoStates.READY_SHOOT)
         while(instance.opModeIsActive() && eventListener.states.get() != Events.AutoStates.FINISH_SHOOT){
-            instance.sleep(100)
+            bot.path.wait(100.0)
         }
-//        if(s.gate_open == Selector.open_gate.YES){
-//            bot.path.segment(
-//                Point(46.0, 91.0).setTolerance(4.0).setDeg(90.0),
-//                Point(46.0, 110.0)
-//            )
-//        }
         //set 3 middle spike mark
         bot.path.segment(
             Point(39.0, 89.0, "intake").setDeg(90.0)
@@ -60,18 +56,18 @@ class Scrimmage_CLOSE(private val instance: LinearOpMode) {
         eventListener.states.set(Events.AutoStates.INTAKE_READY)
         bot.motors.setPowerRatio(0.6)
         bot.path.segment(
-            Point(39.0, 121.0).setTolerance(8.0).setDeg(90.0),
-            Point(39.0, 119.5).setDeg(60.0)
+            Point(37.0, 120.0).setTolerance(10.0).setDeg(90.0),
+            Point(37.0, 119.5).setDeg(60.0)
         )
         Testing.shooting.set(true)
         bot.motors.setPowerRatio(1.0)
         bot.path.segment(
-            Point(105.0, 74.0, "shoot").setTolerance(5.0).setDeg(80.0),
-            Point(108.5, 70.0).setDeg(80.0)
+            Point(99.0, 74.0, "shoot").setTolerance(5.0).setDeg(80.0),
+            Point(102.5, 70.0).setDeg(80.0)
         )
         eventListener.states.set(Events.AutoStates.READY_SHOOT)
         while(instance.opModeIsActive() && eventListener.states.get() != Events.AutoStates.FINISH_SHOOT){
-            instance.sleep(100)
+            bot.path.wait(100.0)
         }
         //set 4 far spike mark
         bot.path.segment(
@@ -80,8 +76,8 @@ class Scrimmage_CLOSE(private val instance: LinearOpMode) {
         eventListener.states.set(Events.AutoStates.INTAKE_READY)
         bot.motors.setPowerRatio(0.6)
         bot.path.segment(
-            Point(17.0, 120.0).setTolerance(8.0).setDeg(105.0),
-            Point(17.0, 114.5).setDeg(80.0)
+            Point(11.0, 110.0).setTolerance(8.0).setDeg(105.0),
+            Point(11.0, 104.5).setDeg(80.0)
         )
         bot.path.end()
     }

@@ -78,7 +78,7 @@ object StrafeConstants {
 }
 @Config
 object RotateConstants {
-    @JvmField var GainSpeed = 1.5
+    @JvmField var GainSpeed = 1.8
     @JvmField var AccelerationLimit = 0.5
     @JvmField var kD = 0.0
     @JvmField var Tolerance = Math.PI/12

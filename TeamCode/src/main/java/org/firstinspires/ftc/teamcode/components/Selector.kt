@@ -22,7 +22,7 @@ class Selector(private val instance : LinearOpMode){
 
     val gate_length = open_gate.entries.lastIndex + 1
     var gate_index = 0
-    var gate_open = open_gate.YES
+    var gate_open = open_gate.NO
 
     lateinit var motors : Motors
 
@@ -102,8 +102,8 @@ class Selector(private val instance : LinearOpMode){
         CLOSE
     }
     enum class open_gate{
-        YES,
-        NO
+        NO,
+        YES
     }
     enum class selectors {
         ALLIANCE,

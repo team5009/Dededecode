@@ -144,8 +144,8 @@ class TeleOp_GamePads (private val instance: LinearOpMode) {
                 t.push_l(0.3)
                 is_pushed = true
             }else if(!(gamepad2.circle || gamepad2.triangle || gamepad2.square) && is_pushed){
-                t.push_l(0.6)
-                t.push_r(0.5)
+                t.push_l(0.7)
+                t.push_r(0.4)
                 is_pushed = false
             }
 

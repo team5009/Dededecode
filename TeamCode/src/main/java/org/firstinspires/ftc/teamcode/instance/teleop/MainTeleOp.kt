@@ -20,7 +20,7 @@ class MainTeleOp: LinearOpMode() {
 		val motors = Motors(hardwareMap, "FL", "FR", "BL", "BR")
 		val intake = HyperionMotor(hardwareMap, "CH")
 		val s = Selector(this)
-		//val ll = Limelight(this.hardwareMap, s.alliance_name)
+		val ll = Limelight(this.hardwareMap, s.alliance_name)
 		val shooter = HyperionMotor(hardwareMap, "Shooter")
 		val t = Testing(this)
 		motors.setPowerRatio(1.0)
@@ -33,8 +33,10 @@ class MainTeleOp: LinearOpMode() {
 
 		val controls = TeleOp_GamePads(this)
 
-		while (opModeInInit()) {
+		ll.llstart()
 
+
+		while (opModeInInit()) {
 		}
 		waitForStart()
 		timer.reset()
@@ -61,9 +63,8 @@ class MainTeleOp: LinearOpMode() {
 			telemetry.addLine()
 			telemetry.addData("timer", controls.spinup)
 			telemetry.addLine()
-			telemetry.addData("f_pressed", controls.f_pressed)
-			telemetry.addData("f_stop", controls.f_stop)
-			telemetry.addData("last velo", t.lastVelocity)
+			telemetry.addData("Goal ID: ", ll.detectG())
+			telemetry.addData("Fiducial results: ", ll.detectO())
 			telemetry.update()
 		}
 
