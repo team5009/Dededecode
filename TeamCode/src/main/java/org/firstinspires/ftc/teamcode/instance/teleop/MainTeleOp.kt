@@ -12,6 +12,8 @@ import org.firstinspires.ftc.teamcode.components.Limelight
 import org.firstinspires.ftc.teamcode.components.Selector
 //import org.firstinspires.ftc.teamcode.components.My_Color_Sensor
 import org.firstinspires.ftc.teamcode.components.Testing
+import org.firstinspires.ftc.teamcode.components.Turret
+import kotlin.math.PI
 import kotlin.math.abs
 
 @TeleOp(name = "Main")
@@ -61,10 +63,10 @@ class MainTeleOp: LinearOpMode() {
 			telemetry.addLine()
 			telemetry.addData("rpm", t.rpm())
 			telemetry.addLine()
-			telemetry.addData("timer", controls.spinup)
+			telemetry.addData("distance", ll.distance() * (PI/180))
 			telemetry.addLine()
 			telemetry.addData("Goal ID: ", ll.detectG())
-			telemetry.addData("Fiducial results: ", ll.detectO())
+			telemetry.addData("Obelisk ID: ", ll.detectO())
 			telemetry.update()
 		}
 

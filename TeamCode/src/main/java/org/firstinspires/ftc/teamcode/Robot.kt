@@ -19,10 +19,10 @@ class Robot(instance: LinearOpMode, events:EventListener, val alliance: Selector
     val motors = Motors(instance.hardwareMap, "FL", "FR", "BL", "BR")
     val otos = Otos(instance.hardwareMap, "OTOS", /*OtosConstant.offset*/)
     val path = PathBuilder(instance, events, motors, otos, true)
-    val sorter = Sorter(instance.hardwareMap)
-    val shooter = Turret(instance, alliance)
+    val sorter = Sorter(instance)
+    val shooter = Turret(instance, alliance, this)
     init{
-       // shooter.ll.llstart()
+//        shooter.ll.llstart()
         if(is_auto){
             path.setDriveConstants(
                 DriveConstants.GainSpeed,
@@ -81,12 +81,47 @@ object RotateConstants {
     @JvmField var GainSpeed = 1.8
     @JvmField var AccelerationLimit = 0.5
     @JvmField var kD = 0.0
+    @JvmField var Tolerance = Math.PI/24
+    @JvmField var Deadband = Math.PI/48
+}
+@Config
+object TurretPID {
+    @JvmField var kP = 0.0
+    @JvmField var kI = 0.0
+    @JvmField var kD = 0.0
+    @JvmField var kF = 0.0
+}
+@Config
+object OtosConstant {
+    @JvmField var offset = Point(0.0, 0.0)
+}
+
+//Hyperion constants
+/*@Config
+object DriveConstants {
+    @JvmField var GainSpeed = 0.05
+    @JvmField var AccelerationLimit = 0.7
+    @JvmField var kD = 0.006
+    @JvmField var Tolerance = 3.0
+    @JvmField var Deadband = 0.25
+}
+@Config
+object StrafeConstants {
+    @JvmField var GainSpeed = 0.086
+    @JvmField var AccelerationLimit = 0.8
+    @JvmField var kD = 0.0
+    @JvmField var Tolerance = 6.0
+    @JvmField var Deadband = 0.25
+}
+@Config
+object RotateConstants {
+    @JvmField var GainSpeed = 1.8
+    @JvmField var AccelerationLimit = 0.5
+    @JvmField var kD = 0.0
     @JvmField var Tolerance = Math.PI/12
     @JvmField var Deadband = Math.PI/24
 }
-
 @Config
 object OtosConstant {
     @JvmField var offset = Point(0.625, 0.0)
-}
-
+}*/
