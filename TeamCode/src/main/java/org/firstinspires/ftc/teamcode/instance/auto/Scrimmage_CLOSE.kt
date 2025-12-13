@@ -17,7 +17,7 @@ class Scrimmage_CLOSE(private val instance: LinearOpMode) {
             Point(112.0, 100.0, "start").setDeg(90.0),
             s.alliance_name == Selector.alliance.RED
         )
-        eventListener.targ.set(540.0)
+
         //set 1
         Testing.shooting.set(true)
         bot.path.segment(
@@ -28,7 +28,7 @@ class Scrimmage_CLOSE(private val instance: LinearOpMode) {
         while(instance.opModeIsActive() && eventListener.states.get() != Events.AutoStates.FINISH_SHOOT){
             bot.path.wait(100.0)
         }
-        eventListener.targ.set(555.0)
+
         //set 2 close spike mark
         bot.path.segment(
             Point(61.0, 91.0, "intake").setDeg(90.0)

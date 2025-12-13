@@ -12,15 +12,15 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import com.qualcomm.robotcore.hardware.HardwareMap
 import com.qualcomm.robotcore.hardware.configuration.EthernetOverUsbConfiguration
 import org.firstinspires.ftc.teamcode.components.Selector
-import org.firstinspires.ftc.teamcode.components.Sorter
-import org.firstinspires.ftc.teamcode.components.Turret
+//import org.firstinspires.ftc.teamcode.components.Sorter
+//import org.firstinspires.ftc.teamcode.components.Turret
 
 class Robot(instance: LinearOpMode, events:EventListener, val alliance: Selector.alliance, is_auto:Boolean = false) {
     val motors = Motors(instance.hardwareMap, "FL", "FR", "BL", "BR")
     val otos = Otos(instance.hardwareMap, "OTOS", /*OtosConstant.offset*/)
     val path = PathBuilder(instance, events, motors, otos, true)
-    val sorter = Sorter(instance)
-    val shooter = Turret(instance, alliance, this)
+//    val sorter = Sorter(instance)
+//    val shooter = Turret(instance, alliance, this)
     init{
 //        shooter.ll.llstart()
         if(is_auto){

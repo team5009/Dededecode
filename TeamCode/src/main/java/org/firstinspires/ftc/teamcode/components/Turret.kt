@@ -76,7 +76,6 @@ class Turret(private val instance: LinearOpMode, alliance: Selector.alliance, va
     fun init_auto(){
     }
     fun init_teleOp(){
-        go_to()
     }
     fun update_index(): Int {
         if (current_voltage > 2.8 && last_voltage < 1.0 && index.get() < 2) {

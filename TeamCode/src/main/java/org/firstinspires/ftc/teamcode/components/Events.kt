@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.components
 import ca.helios5009.hyperion.misc.events.EventListener
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import com.qualcomm.robotcore.util.ElapsedTime
+import com.sun.tools.javac.sym.CreateSymbols
 import kotlinx.coroutines.delay
 import org.firstinspires.ftc.teamcode.Robot
 import java.util.concurrent.atomic.AtomicReference
@@ -14,9 +15,11 @@ class Events(private val instance:LinearOpMode, private val s : Selector, privat
     //val color = My_Color_Sensor(instance)
     var was_broken = false
     val targ = if(s.path_name == Selector.paths.FAR){
-        AtomicReference(585.0)
+        t.shot_controller.setTarget(840.0)
+        t.hood(1.0)
     }else {
-        AtomicReference(550.0)
+        t.shot_controller.setTarget(660.0)
+        t.hood(0.2)
     }
     val time_out = ElapsedTime()
     init {
@@ -27,50 +30,65 @@ class Events(private val instance:LinearOpMode, private val s : Selector, privat
         }
         listener.addListener("start"){
             Testing.shooting.set(true)
+            t.shooter.power = 0.8
+            delay(300)
             while(instance.opModeIsActive()){
                 if(Testing.shooting.get()){
-                    t.power_mod(targ.get())
+                    t.power_mod()
                 }else{
-                    t.shooter.power = 0.0
+                    t.shooter.power = 0.5
                 }
             }
             "stop"
         }
         listener.addListener("shoot"){
+            t.push_r(0.55)
             while(instance.opModeIsActive() && states.get() != Events.AutoStates.READY_SHOOT){
                 delay(100)
             }
-            delay(400)
             shoot()
-            t.push_r(0.75)
-            delay(300)
+            t.shot_controller.setTarget(t.shot_controller.targetPosition - 54.0)
             t.push_r(0.45)
+            delay(100)
+            t.push_r(0.8)
+            delay(600)
             shoot()
+            t.push_r(0.45)
+            delay(50)
             t.push_r(0.8)
             t.push_l(0.3)
-            targ.set(targ.get() - 12.0)
             delay(250)
-            shoot()
             t.push_r(0.45)
             t.push_l(0.65)
+            shoot()
+            t.shot_controller.setTarget(t.shot_controller.targetPosition + 10.0)
             states.set(AutoStates.FINISH_SHOOT)
-            targ.set(targ.get() + 12.0)
             Testing.shooting.set(false)
             "stopShooting"
         }
         listener.addListener("intake"){
+            t.intake.power = 1.0
             while (instance.opModeIsActive() && states.get() != AutoStates.INTAKE_READY){
                 delay(100)
             }
             s.motors.setPowerRatio(0.6)
-            t.intake.power = 1.0
             delay(800)
-            Testing.shooting.set(true)
-            delay(1100)
             states.set(AutoStates.INTAKED)
             s.motors.setPowerRatio(1.0)
+            delay(400)
+            Testing.shooting.set(true)
+            delay(1100)
             t.intake.power = 0.0
             "stopped"
+        }
+        listener.addListener("intake_ready"){
+            states.set(AutoStates.INTAKE_READY)
+            "set"
+        }
+        listener.addListener("final_start"){
+            delay(300)
+            states.set(AutoStates.READY_SHOOT)
+            ""
         }
         listener.addListener("gate"){
             while(instance.opModeIsActive() && states.get() != Events.AutoStates.GATE_READY){
@@ -88,8 +106,8 @@ class Events(private val instance:LinearOpMode, private val s : Selector, privat
     suspend fun shoot(){
         val time_out = ElapsedTime()
         time_out.reset()
-        while(instance.opModeIsActive() && time_out.seconds() < 1.7){
-            if( abs(targ.get() - t.lastVelocity) < 17.0){
+        while(instance.opModeIsActive() && time_out.seconds() < 0.5){
+            if(abs(t.shot_controller.targetPosition - t.lastVelocity) < 17.0){
                 break
             }
             delay(10)
@@ -104,7 +122,7 @@ class Events(private val instance:LinearOpMode, private val s : Selector, privat
                 was_broken = false
                 break
             }
-            if(time_out.seconds() > 0.7){
+            if(time_out.seconds() > 0.6){
                 break
             }
         }

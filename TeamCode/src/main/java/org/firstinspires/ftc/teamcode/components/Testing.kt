@@ -1,24 +1,31 @@
 package org.firstinspires.ftc.teamcode.components
 
-import ca.helios5009.hyperion.core.PIDFController
 import ca.helios5009.hyperion.hardware.HyperionMotor
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import com.qualcomm.robotcore.hardware.DcMotor
+import com.qualcomm.robotcore.hardware.DcMotorEx
 import com.qualcomm.robotcore.hardware.DcMotorSimple
 import com.qualcomm.robotcore.hardware.Servo
 import java.util.concurrent.atomic.AtomicReference
 import kotlin.math.PI
-import kotlin.math.min
+import kotlin.math.withSign
 
 class Testing(private val instance: LinearOpMode) {
+
+
     val intake = HyperionMotor(instance.hardwareMap, "CH")
-    val shooter = HyperionMotor(instance.hardwareMap, "Shooter")
+    val hood_adjuster = instance.hardwareMap.get(Servo::class.java, "Hood")
+    val shooter = instance.hardwareMap.get(DcMotorEx::class.java, "Shooter")
     val feeder = instance.hardwareMap.get(Servo::class.java, "Feeder")
     val push_r = instance.hardwareMap.get(Servo::class.java, "R")
     val push_l = instance.hardwareMap.get(Servo::class.java, "L")
     val breakbeam = Java_Beambreak().create_sensor("bb1", instance.hardwareMap, true)
+    val hood = instance.hardwareMap.get(Servo::class.java, "Hood")
 
-    val convert = (PI*4)/(28*1.6)
+    val power_controller = ShooterPIDF(0.00002, -0.004)  // kP, kD
+    val shot_controller = Shooter_Controller(0.0004, -0.004)
+
+    val convert = (PI*4*1.6)/(28)
 
 
     val gain = 0.008
@@ -26,10 +33,8 @@ class Testing(private val instance: LinearOpMode) {
 
     init {
         shooter.zeroPowerBehavior = DcMotor.ZeroPowerBehavior.FLOAT
-        intake.motor.direction = DcMotorSimple.Direction.FORWARD
         intake.motor.direction = DcMotorSimple.Direction.REVERSE
-        shooter.motor.direction = DcMotorSimple.Direction.FORWARD
-        shooter.motor.direction = DcMotorSimple.Direction.REVERSE
+        shooter.direction = DcMotorSimple.Direction.REVERSE
     }
     fun init_auto(){
         lift(1.0)
@@ -47,20 +52,13 @@ class Testing(private val instance: LinearOpMode) {
         lastVelocity = v_error
     }
  */
-    fun power_mod(target: Double) {
-        val current_v = shooter.velocity * convert
-        val exp_e = target - (2 * current_v - lastVelocity)
-
-        shooter.power = min(shooter.power + gain * (exp_e / target), 1.0)
-
-        lastVelocity = current_v
+    fun power_mod() {
+        shot_controller.power_mod(shooter)
     }
-//    fun power_mod_pidf(target: Double){
-//        val current_v = shooter.velocity * convert
-//
-//        shooter.power =
-//
-//    }
+
+    fun hood(pos: Double) {
+        hood.position = pos
+    }
     fun lift(position: Double){
         feeder.position = position
     }

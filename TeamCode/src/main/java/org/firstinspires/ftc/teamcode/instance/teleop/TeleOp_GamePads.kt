@@ -19,6 +19,7 @@ class TeleOp_GamePads (private val instance: LinearOpMode) {
     var targ = 590.0
 
     //Dbounce
+    var far_pressed = false
     var f_pressed = false
     var f_stop = true
     var is_pushed = false
@@ -53,7 +54,7 @@ class TeleOp_GamePads (private val instance: LinearOpMode) {
 
             //Feeder
             if(gamepad1.cross){
-                if(abs(targ - t.lastVelocity) < 15.0 && !was_lifting) {
+                if(abs(t.shot_controller.getPositionError(t.velocity())) < 20.0 && !was_lifting) {
                     t.lift(0.0)
                     was_lifting = true
                 }else if(was_lifting && !was_broken && !t.breakbeam.state){
@@ -69,24 +70,26 @@ class TeleOp_GamePads (private val instance: LinearOpMode) {
 
             //flywheel
             if (gamepad1.dpad_down && !f_pressed && f_stop) {
-                t.shooter.power = 0.5
+                t.shot_controller.setTarget(610.0)
+                t.hood(0.2)
                 f_pressed = true
                 f_stop = false
-                spinup = -1L
-                snap = System.currentTimeMillis()
-            } else if (gamepad1.dpad_down && !f_pressed && !f_stop) {
+            }else if(gamepad1.dpad_down && !f_pressed && !f_stop && !far_pressed){
+                t.shot_controller.setTarget(780.0)
+                t.hood(1.0)
+                f_pressed = true
+                f_stop = false
+                far_pressed = true
+            }else if (gamepad1.dpad_down && !f_pressed && !f_stop) {
                 t.shooter.power = 0.0
                 f_pressed = true
                 f_stop = true
+                far_pressed = false
             } else if (!gamepad1.dpad_down && f_pressed) {
                 f_pressed = false
             }
-            if (t.rpm() >= 4000.0 && spinup < 0) {
-                spinup = System.currentTimeMillis() - snap
-            }
             if (!f_stop) {
-                t.power_mod(targ)
-                instance.telemetry.addLine("shooting")
+                t.power_mod()
             }
         }
 
@@ -107,29 +110,29 @@ class TeleOp_GamePads (private val instance: LinearOpMode) {
             is_solo = false
         }
         if(!is_solo){
-
             //flywheel
-            if(gamepad2.dpad_down && !f_pressed && f_stop){
-                t.shooter.power = 0.5
+            if (gamepad2.dpad_down && !f_pressed && f_stop) {
+                t.shot_controller.setTarget(610.0)
+                t.hood(0.2)
                 f_pressed = true
                 f_stop = false
-                spinup = -1L
-                snap = System.currentTimeMillis()
-            }else if(gamepad2.dpad_down && !f_pressed && !f_stop){
+            }else if(gamepad2.dpad_down && !f_pressed && !f_stop && !far_pressed){
+                t.shot_controller.setTarget(780.0)
+                t.hood(1.0)
+                f_pressed = true
+                f_stop = false
+                far_pressed = true
+            }else if (gamepad2.dpad_down && !f_pressed && !f_stop) {
                 t.shooter.power = 0.0
                 f_pressed = true
                 f_stop = true
-            }else if(!gamepad2.dpad_down && f_pressed){
+                far_pressed = false
+            } else if (!gamepad2.dpad_down && f_pressed) {
                 f_pressed = false
             }
-            if(t.rpm() >= 4000.0 && spinup < 0){
-                spinup = System.currentTimeMillis() - snap
+            if (!f_stop) {
+                t.power_mod()
             }
-            if(!f_stop) {
-                t.power_mod(targ)
-                instance.telemetry.addLine("shooting")
-            }
-
             //Transfer
             if(gamepad2.circle && !is_pushed){
                 //feed the feeder right
@@ -151,7 +154,7 @@ class TeleOp_GamePads (private val instance: LinearOpMode) {
 
             //Feeder
             if(gamepad2.cross){
-                if(abs(targ - t.lastVelocity) < 15.0 && !was_lifting) {
+                if(abs(t.shot_controller.getPositionError(t.velocity())) < 20.0 && !was_lifting) {
                     t.lift(0.0)
                     was_lifting = true
                 }else if(was_lifting && !was_broken && !t.breakbeam.state){
