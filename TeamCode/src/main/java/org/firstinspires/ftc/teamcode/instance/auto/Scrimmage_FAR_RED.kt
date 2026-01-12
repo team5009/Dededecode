@@ -10,7 +10,7 @@ import org.firstinspires.ftc.teamcode.components.Testing
 import kotlin.math.PI
 import kotlin.math.abs
 
-class Scrimmage_FAR(private val instance: LinearOpMode) {
+class Scrimmage_FAR_RED(private val instance: LinearOpMode) {
     fun run(time: ElapsedTime, s: Selector, t: Testing){
         t.shooter.power = 0.5
         val eventListener = Events(instance, s, t)
@@ -50,25 +50,29 @@ class Scrimmage_FAR(private val instance: LinearOpMode) {
             )
             instance.sleep(500)
         }else{
-            bot.path.segment(
-                Point(35.0, 100.0, "intake").setDeg(50.0),
-                Point(39.0, 137.0, "intake_ready").setDeg(90.0).setTolerance(10.0),
-                Point(40.0, 130.5).setDeg(90.0).setTolerance(13.0),
-                Point(35.0, 85.0, "shoot").setTolerance(6.0).setDeg(50.0),
-                Point(18.0, 86.0).setDeg(40.0)
-            )
-
-        }
-        eventListener.states.set(Events.AutoStates.READY_SHOOT)
-        while(instance.opModeIsActive() && eventListener.states.get() != Events.AutoStates.FINISH_SHOOT){
-            bot.path.wait(100.0)
+//            bot.path.segment(
+//                Point(35.0, 100.0, "intake").setDeg(90.0),
+//                Point(39.0, 137.0, "intake_ready").setDeg(90.0).setTolerance(20.0)
+//            )
+//            .segment(
+//                Point(40.0, 130.5).setDeg(90.0).setTolerance(13.0),
+//                Point(35.0, 85.0, "shoot").setTolerance(6.0).setDeg(40.0),
+//                Point(18.0, 86.0).setDeg(40.0)
+//            )
+//
+//        }
+//        eventListener.states.set(Events.AutoStates.READY_SHOOT)
+//        while(instance.opModeIsActive() && eventListener.states.get() != Events.AutoStates.FINISH_SHOOT){
+//            bot.path.wait(100.0)
         }
         //Set 3 far spike mark
         t.shot_controller.setTarget(790.0)
         bot.path.segment(
             Point(15.0, 95.0, "intake").setDeg(50.0),
-            Point(20.0, 139.0,"intake_ready").setDeg(90.0).setTolerance(12.0),
-            Point(21.0, 142.0).setDeg(90.0).setTolerance(14.0),
+            Point(20.0, 129.0,"intake_ready").setDeg(90.0).setTolerance(12.0)
+        )
+        .segment(
+            Point(21.0, 132.0).setDeg(90.0).setTolerance(14.0),
             Point(18.0, 84.0, "shoot").setDeg(40.0)
         )
         eventListener.states.set(Events.AutoStates.READY_SHOOT)
@@ -81,7 +85,9 @@ class Scrimmage_FAR(private val instance: LinearOpMode) {
         t.hood(0.05)
         bot.path.segment(
             Point(70.0, 111.0, "intake").setTolerance(8.0).setDeg(90.0),
-            Point(62.0, 136.0, "intake_ready").setDeg(90.0).setTolerance(8.0),
+            Point(62.0, 136.0, "intake_ready").setDeg(90.0).setTolerance(8.0)
+        )
+        .segment(
             Point(67.0, 136.0, "shoot").setDeg(75.0).setTolerance(7.0),
             Point(99.0, 106.0, "final_start").setDeg(70.0)
         )

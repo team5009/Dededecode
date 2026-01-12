@@ -4,6 +4,10 @@ import ca.helios5009.hyperion.misc.events.EventListener
 import ca.helios5009.hyperion.pathing.Point
 import com.acmerobotics.dashboard.FtcDashboard
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry
+import com.bylazar.fullpanels.FullPanelsPluginConfig
+import com.bylazar.panels.Panels
+import com.bylazar.telemetry.JoinedTelemetry
+import com.bylazar.telemetry.PanelsTelemetry
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import org.firstinspires.ftc.teamcode.Robot
@@ -13,8 +17,8 @@ import org.firstinspires.ftc.teamcode.components.Selector
 class PID_Tuning_Diagon: LinearOpMode() {
     val eventListener = EventListener()
     override fun runOpMode() {
-        val dashboard = FtcDashboard.getInstance()
-        telemetry = MultipleTelemetry(telemetry, dashboard.telemetry)
+        val dashboard = Panels
+        telemetry = JoinedTelemetry(PanelsTelemetry.ftcTelemetry, telemetry)
         val bot = Robot(this, eventListener, Selector.alliance.RED,true)
         val path = bot.path
         waitForStart()

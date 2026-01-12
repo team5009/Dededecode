@@ -7,6 +7,8 @@ import ca.helios5009.hyperion.misc.events.EventListener
 import ca.helios5009.hyperion.pathing.PathBuilder
 import ca.helios5009.hyperion.pathing.Point
 import com.acmerobotics.dashboard.config.Config
+import com.bylazar.battery.PanelsBattery
+import com.bylazar.configurables.annotations.Configurable
 import com.qualcomm.hardware.limelightvision.Limelight3A
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import com.qualcomm.robotcore.hardware.HardwareMap
@@ -22,7 +24,6 @@ class Robot(instance: LinearOpMode, events:EventListener, val alliance: Selector
 //    val sorter = Sorter(instance)
 //    val shooter = Turret(instance, alliance, this)
     init{
-//        shooter.ll.llstart()
         if(is_auto){
             path.setDriveConstants(
                 DriveConstants.GainSpeed,
@@ -59,8 +60,12 @@ class Robot(instance: LinearOpMode, events:EventListener, val alliance: Selector
 //        shooter.ll.stop()
 //    }
 }
-
-@Config
+fun readVoltage(): Double {
+    val provider = PanelsBattery.provider
+    val voltage = provider.batteryVoltage
+    return voltage
+}
+@Configurable
 object DriveConstants {
     @JvmField var GainSpeed = 0.05
     @JvmField var AccelerationLimit = 0.7
@@ -68,7 +73,7 @@ object DriveConstants {
     @JvmField var Tolerance = 3.0
     @JvmField var Deadband = 0.25
 }
-@Config
+@Configurable
 object StrafeConstants {
     @JvmField var GainSpeed = 0.086
     @JvmField var AccelerationLimit = 0.8
@@ -76,7 +81,7 @@ object StrafeConstants {
     @JvmField var Tolerance = 6.0
     @JvmField var Deadband = 0.25
 }
-@Config
+@Configurable
 object RotateConstants {
     @JvmField var GainSpeed = 1.8
     @JvmField var AccelerationLimit = 0.5
@@ -84,14 +89,14 @@ object RotateConstants {
     @JvmField var Tolerance = Math.PI/24
     @JvmField var Deadband = Math.PI/48
 }
-@Config
+@Configurable
 object TurretPID {
     @JvmField var kP = 0.0
     @JvmField var kI = 0.0
     @JvmField var kD = 0.0
     @JvmField var kF = 0.0
 }
-@Config
+@Configurable
 object OtosConstant {
     @JvmField var offset = Point(0.0, 0.0)
 }

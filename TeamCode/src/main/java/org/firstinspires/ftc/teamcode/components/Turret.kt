@@ -29,12 +29,13 @@ class Turret(private val instance: LinearOpMode, alliance: Selector.alliance, va
     val right_spin = instance.hardwareMap.get(CRServoImplEx::class.java, "RS")
     val turret_en = instance.hardwareMap.get(AnalogInput::class.java, "turret_en")
     val breakbeam = Java_Beambreak().create_sensor("bb1", instance.hardwareMap, true)
-    val ll = Limelight(instance.hardwareMap, alliance)
+    val ll = Limelight(instance.hardwareMap, alliance, true)
 
     //pidf
     val turret_pid = PIDFController(TurretPID.kP, TurretPID.kI, TurretPID.kD, TurretPID.kF)
 
     //vars
+    val height = 15.0 // ask sam
     val min_hood = 10.5
     val max_hood = 45.0
     val current_voltage = turret_en.voltage

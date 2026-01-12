@@ -43,7 +43,7 @@ class Menu : LinearOpMode() {
         if (s.path_name == Selector.paths.FAR) {
             Scrimmage_FAR(this).run(timer, s, t)
         } else if (s.path_name == Selector.paths.CLOSE) {
-            Scrimmage_CLOSE(this).run(timer, s, t)
+            Scrimmage_FAR_RED(this).run(timer, s, t)
         }
     }
 }

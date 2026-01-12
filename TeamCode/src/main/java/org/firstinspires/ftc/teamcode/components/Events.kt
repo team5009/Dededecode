@@ -18,8 +18,8 @@ class Events(private val instance:LinearOpMode, private val s : Selector, privat
         t.shot_controller.setTarget(840.0)
         t.hood(1.0)
     }else {
-        t.shot_controller.setTarget(660.0)
-        t.hood(0.2)
+        t.shot_controller.setTarget(840.0)
+        t.hood(1.0)
     }
     val time_out = ElapsedTime()
     init {

@@ -10,7 +10,6 @@ class My_Beambreak(private val instance: LinearOpMode) {
     val breakbeam = instance.hardwareMap.get(DigitalChannel::class.java, "bb1");
     val flapper = instance.hardwareMap.get(Servo::class.java, "Feeder")
 
-
     fun beambreak(){
         breakbeam.setMode(DigitalChannel.Mode.INPUT);
     }

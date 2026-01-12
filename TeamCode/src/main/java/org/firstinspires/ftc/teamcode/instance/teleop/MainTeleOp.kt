@@ -10,11 +10,11 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import org.firstinspires.ftc.teamcode.components.Limelight
 import org.firstinspires.ftc.teamcode.components.Selector
-//import org.firstinspires.ftc.teamcode.components.My_Color_Sensor
 import org.firstinspires.ftc.teamcode.components.Testing
 import org.firstinspires.ftc.teamcode.components.Turret
+//import org.firstinspires.ftc.teamcode.components.My_Color_Sensor
+//import org.firstinspires.ftc.teamcode.components.Testing
 import kotlin.math.PI
-import kotlin.math.abs
 
 @TeleOp(name = "Main")
 class MainTeleOp: LinearOpMode() {
@@ -22,9 +22,9 @@ class MainTeleOp: LinearOpMode() {
 		val motors = Motors(hardwareMap, "FL", "FR", "BL", "BR")
 		val intake = HyperionMotor(hardwareMap, "CH")
 		val s = Selector(this)
-		val ll = Limelight(this.hardwareMap, s.alliance_name)
-		val shooter = HyperionMotor(hardwareMap, "Shooter")
 		val t = Testing(this)
+		val ll = Limelight(this.hardwareMap,s.alliance_name, true)
+		val shooter = HyperionMotor(hardwareMap, "Shooter")
 		motors.setPowerRatio(1.0)
 
 		//val color = My_Color_Sensor(this)
@@ -35,7 +35,7 @@ class MainTeleOp: LinearOpMode() {
 
 		val controls = TeleOp_GamePads(this)
 
-		ll.llstart()
+
 
 
 		while (opModeInInit()) {
@@ -59,17 +59,18 @@ class MainTeleOp: LinearOpMode() {
 			val strafe = gamepad1.left_stick_x.toDouble()
 			val rotate = gamepad1.right_stick_x.toDouble()
 			motors.gamepadMove(drive, strafe, rotate)
-			telemetry.addData("speed", t.velocity())
+
+
+			telemetry.addData("bot pose", ll.pose())
 			telemetry.addLine()
-			telemetry.addData("rpm", t.rpm())
-			telemetry.addLine()
+//			telemetry.addData("rpm", t.rpm())
+//			telemetry.addLine()
 			telemetry.addData("distance", ll.distance() * (PI/180))
 			telemetry.addLine()
-			telemetry.addData("Goal ID: ", ll.detectG())
+			telemetry.addData("Goal ID: ", ll.G_info())
 			telemetry.addData("Obelisk ID: ", ll.detectO())
 			telemetry.update()
 		}
-
 	}
 }
 

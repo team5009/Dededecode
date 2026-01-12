@@ -67,30 +67,29 @@ class TeleOp_GamePads (private val instance: LinearOpMode) {
                 was_lifting = false
                 was_broken = false
             }
-
-            //flywheel
-            if (gamepad1.dpad_down && !f_pressed && f_stop) {
-                t.shot_controller.setTarget(610.0)
-                t.hood(0.2)
-                f_pressed = true
-                f_stop = false
-            }else if(gamepad1.dpad_down && !f_pressed && !f_stop && !far_pressed){
-                t.shot_controller.setTarget(780.0)
-                t.hood(1.0)
-                f_pressed = true
-                f_stop = false
-                far_pressed = true
-            }else if (gamepad1.dpad_down && !f_pressed && !f_stop) {
-                t.shooter.power = 0.0
-                f_pressed = true
-                f_stop = true
-                far_pressed = false
-            } else if (!gamepad1.dpad_down && f_pressed) {
-                f_pressed = false
-            }
-            if (!f_stop) {
-                t.power_mod()
-            }
+        }
+        //flywheel
+        if (gamepad1.cross && !f_pressed && f_stop) {
+            t.shot_controller.setTarget(610.0)
+            t.hood(0.2)
+            f_pressed = true
+            f_stop = false
+        }else if(gamepad1.cross && !f_pressed && !f_stop && !far_pressed){
+            t.shot_controller.setTarget(780.0)
+            t.hood(1.0)
+            f_pressed = true
+            f_stop = false
+            far_pressed = true
+        }else if (gamepad1.cross && !f_pressed && !f_stop) {
+            t.shooter.power = 0.0
+            f_pressed = true
+            f_stop = true
+            far_pressed = false
+        } else if (!gamepad1.cross && f_pressed) {
+            f_pressed = false
+        }
+        if (!f_stop) {
+            t.power_mod()
         }
 
         //intake
@@ -110,29 +109,6 @@ class TeleOp_GamePads (private val instance: LinearOpMode) {
             is_solo = false
         }
         if(!is_solo){
-            //flywheel
-            if (gamepad2.dpad_down && !f_pressed && f_stop) {
-                t.shot_controller.setTarget(610.0)
-                t.hood(0.2)
-                f_pressed = true
-                f_stop = false
-            }else if(gamepad2.dpad_down && !f_pressed && !f_stop && !far_pressed){
-                t.shot_controller.setTarget(780.0)
-                t.hood(1.0)
-                f_pressed = true
-                f_stop = false
-                far_pressed = true
-            }else if (gamepad2.dpad_down && !f_pressed && !f_stop) {
-                t.shooter.power = 0.0
-                f_pressed = true
-                f_stop = true
-                far_pressed = false
-            } else if (!gamepad2.dpad_down && f_pressed) {
-                f_pressed = false
-            }
-            if (!f_stop) {
-                t.power_mod()
-            }
             //Transfer
             if(gamepad2.circle && !is_pushed){
                 //feed the feeder right
