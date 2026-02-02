@@ -70,7 +70,7 @@ object DriveConstants {
     @JvmField var GainSpeed = 0.05
     @JvmField var AccelerationLimit = 0.7
     @JvmField var kD = 0.006
-    @JvmField var Tolerance = 3.0
+    @JvmField var Tolerance = 5.0
     @JvmField var Deadband = 0.25
 }
 @Configurable
@@ -83,7 +83,7 @@ object StrafeConstants {
 }
 @Configurable
 object RotateConstants {
-    @JvmField var GainSpeed = 1.8
+    @JvmField var GainSpeed = 2.1
     @JvmField var AccelerationLimit = 0.5
     @JvmField var kD = 0.0
     @JvmField var Tolerance = Math.PI/24

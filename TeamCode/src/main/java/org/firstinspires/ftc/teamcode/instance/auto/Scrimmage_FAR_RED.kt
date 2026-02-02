@@ -18,12 +18,13 @@ class Scrimmage_FAR_RED(private val instance: LinearOpMode) {
         s.motors = bot.motors
         //start pose
         bot.path.start(
-            Point(8.0, 86.0,"start").setDeg(36.0),
+            Point(8.0, 86.0,"start").setDeg(-36.0),
             s.alliance_name == Selector.alliance.RED
         )
         //Set 1
+        bot.path.wait(1500.0)
         bot.path.segment(
-            Point(15.0, 90.0,"shoot").setDeg(36.0),
+            Point(8.0, 86.0,"shoot").setDeg(-36.0),
         )
         while(abs(t.shot_controller.getPositionError(t.velocity())) < 50.0) {
             bot.path.wait(100.0)
@@ -33,68 +34,44 @@ class Scrimmage_FAR_RED(private val instance: LinearOpMode) {
         while(instance.opModeIsActive() && eventListener.states.get() != Events.AutoStates.FINISH_SHOOT){
             bot.path.wait(100.0)
         }
+
         //Set 2 middle spike mark
-        t.shot_controller.setTarget(810.0)
-        if(s.gate_open == Selector.open_gate.YES){
-            //gate
-            bot.path.segment(
-                Point(42.0, 104.0, "intake").setDeg(60.0)
-            )
-            eventListener.states.set(Events.AutoStates.INTAKE_READY)
-            bot.path.segment(
-                Point(70.0, 125.0).setTolerance(8.0).setDeg(80.0),
-                Point(64.0, 130.5).setDeg(95.0).setTolerance(5.0),
-                Point(61.0, 118.5).setDeg(95.0).setTolerance(5.0),
-                Point(64.0, 130.5).setDeg(95.0).setTolerance(5.0),
-                Point(61.0, 128.5).setDeg(95.0)
-            )
-            instance.sleep(500)
-        }else{
-//            bot.path.segment(
-//                Point(35.0, 100.0, "intake").setDeg(90.0),
-//                Point(39.0, 137.0, "intake_ready").setDeg(90.0).setTolerance(20.0)
-//            )
-//            .segment(
-//                Point(40.0, 130.5).setDeg(90.0).setTolerance(13.0),
-//                Point(35.0, 85.0, "shoot").setTolerance(6.0).setDeg(40.0),
-//                Point(18.0, 86.0).setDeg(40.0)
-//            )
-//
-//        }
-//        eventListener.states.set(Events.AutoStates.READY_SHOOT)
-//        while(instance.opModeIsActive() && eventListener.states.get() != Events.AutoStates.FINISH_SHOOT){
-//            bot.path.wait(100.0)
+        t.shot_controller.setTarget(757.0)
+        bot.path.segment(
+            Point(41.0, 100.0, "intake").setDeg(-90.0),
+            Point(46.0, 134.0, "intake_ready").setDeg(-90.0).setTolerance(7.0),
+            Point(40.0, 130.5, "speed_60").setDeg(-90.0).setTolerance(11.0),
+        )
+        bot.motors.setPowerRatio(1.0)
+        bot.path.segment(
+            Point(24.0, 90.0, "shoot").setTolerance(6.0).setDeg(-40.0),
+            Point(13.0, 92.0).setDeg(-40.0)
+        )
+        eventListener.states.set(Events.AutoStates.READY_SHOOT)
+        while (instance.opModeIsActive() && eventListener.states.get() != Events.AutoStates.FINISH_SHOOT) {
+            bot.path.wait(100.0)
         }
         //Set 3 far spike mark
-        t.shot_controller.setTarget(790.0)
+        t.shot_controller.setTarget(758.0)
         bot.path.segment(
-            Point(15.0, 95.0, "intake").setDeg(50.0),
-            Point(20.0, 129.0,"intake_ready").setDeg(90.0).setTolerance(12.0)
+            Point(18.0, 103.0, "intake").setDeg(-45.0),
+            Point(27.0, 133.0, "intake_ready").setDeg(-90.0).setTolerance(12.0)
         )
-        .segment(
-            Point(21.0, 132.0).setDeg(90.0).setTolerance(14.0),
-            Point(18.0, 84.0, "shoot").setDeg(40.0)
-        )
+
+        bot.path.wait(500.0)
+            .segment(
+                Point(19.0, 132.0).setDeg(-90.0).setTolerance(14.0),
+                Point(17.0, 88.0, "shoot").setDeg(-40.0)
+            )
         eventListener.states.set(Events.AutoStates.READY_SHOOT)
-        while(instance.opModeIsActive() && eventListener.states.get() != Events.AutoStates.FINISH_SHOOT){
+        while (instance.opModeIsActive() && eventListener.states.get() != Events.AutoStates.FINISH_SHOOT) {
             bot.path.wait(100.0)
         }
-        //Set 4 close spike mark
-        Testing.shooting.set(true)
-        t.shot_controller.setTarget(630.0)
-        t.hood(0.05)
+        //Out of shoot zone
         bot.path.segment(
-            Point(70.0, 111.0, "intake").setTolerance(8.0).setDeg(90.0),
-            Point(62.0, 136.0, "intake_ready").setDeg(90.0).setTolerance(8.0)
+            Point(36.0, 125.0).setTolerance(8.0).setDeg(-90.0),
+            Point(36.0, 132.0).setDeg(-90.0).setTolerance(8.0)
         )
-        .segment(
-            Point(67.0, 136.0, "shoot").setDeg(75.0).setTolerance(7.0),
-            Point(99.0, 106.0, "final_start").setDeg(70.0)
-        )
-        eventListener.states.set(Events.AutoStates.READY_SHOOT)
-        while(instance.opModeIsActive() && eventListener.states.get() != Events.AutoStates.FINISH_SHOOT){
-            bot.path.wait(100.0)
-        }
         bot.path.end()
     }
 }

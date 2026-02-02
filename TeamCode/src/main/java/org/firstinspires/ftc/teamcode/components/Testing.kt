@@ -34,6 +34,7 @@ class Testing(private val instance: LinearOpMode) {
     init {
         shooter.zeroPowerBehavior = DcMotor.ZeroPowerBehavior.FLOAT
         intake.motor.direction = DcMotorSimple.Direction.REVERSE
+        intake.motor.zeroPowerBehavior = DcMotor.ZeroPowerBehavior.FLOAT
         shooter.direction = DcMotorSimple.Direction.REVERSE
     }
     fun init_auto(){

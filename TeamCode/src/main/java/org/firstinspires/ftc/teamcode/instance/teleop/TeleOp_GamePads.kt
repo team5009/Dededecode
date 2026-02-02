@@ -75,7 +75,7 @@ class TeleOp_GamePads (private val instance: LinearOpMode) {
             f_pressed = true
             f_stop = false
         }else if(gamepad1.cross && !f_pressed && !f_stop && !far_pressed){
-            t.shot_controller.setTarget(780.0)
+            t.shot_controller.setTarget(770.0)
             t.hood(1.0)
             f_pressed = true
             f_stop = false

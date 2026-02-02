@@ -18,7 +18,7 @@ class Selector(private val instance : LinearOpMode){
     var selector = 0
     val path_length = paths.entries.lastIndex + 1
     var path_index = 0
-    var path_name = paths.FAR
+    var path_name = paths.FAR_RED
 
     val gate_length = open_gate.entries.lastIndex + 1
     var gate_index = 0
@@ -98,8 +98,10 @@ class Selector(private val instance : LinearOpMode){
         BLUE
     }
     enum class paths {
-        FAR,
-        CLOSE
+        FAR_RED,
+        FAR_BLUE,
+        CLOSE_RED,
+        CLOSE_BLUE
     }
     enum class open_gate{
         NO,
